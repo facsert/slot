@@ -9,9 +9,9 @@ from loguru import logger
 
 def title(msg: str="title", level:int=3, length: int=50) -> str:
     """ 标题打印 """
-    index = int(level) % 3
+    index: int = int(level) % 3
     logger.info(("\n\n", "\n", "", "")[index])
-    border = ("#", "=", "*", "-")[index] * length
+    border: str = ("#", "=", "*", "-")[index] * length
     logger.info(f"{border} {msg} {border}")
     return msg
 
@@ -31,8 +31,8 @@ def abs_dir(*path: str, platform: str|None =None) -> str:
     Param platform str  : 根据平台变更拼接方式(linux, windows)
     Attention: 参数 path 相对路径必须相对于项目根目录
     """
-    platform = system() if platform is None else platform
-    abs_path = join(dirname(dirname(__file__)), join("", *path))
+    platform: str = system() if platform is None else platform
+    abs_path: str = join(dirname(dirname(__file__)), join("", *path))
     sep = {'linux': '/', 'windows': '\\'}.get(platform.lower(), '/')
     return abs_path.replace("/", sep).replace("\\", sep)
 
@@ -40,8 +40,8 @@ def wait(delay: int=1, length: int=50) -> int:
     """ 等待进度条 """
     use = 0
     while use < delay:
-        block = int(round(length * use / delay))
-        text = f"[{'#' * block + '-' * (length - block)}]"
+        block: int = int(round(length * use / delay))
+        text: str = f"[{'#' * block + '-' * (length - block)}]"
         print(f"Please wait {delay}s {text} {delay - use:>4}s", end="\r")
         sleep(1)
         use += 1
@@ -54,7 +54,7 @@ def listdir(path=".", ignore=None):
         display(f"{path} not exist", False)
         return []
 
-    ignore = ignore if ignore else lambda f: False
+    ignore: callable|None = ignore if ignore else lambda f: False
     for root, _, files in walk(path):
         for file in files:
             if not ignore(file):
